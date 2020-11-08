@@ -6,13 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 namespace ModuloContas.Services.ContaPagar
 {
-    public class ContaPagarService : TituloServices, IContaPagarService
+    public class ContaPagarService : IContaPagarService
     {
         private readonly IContaPagarRepository _contaPagarRepository;
-        public override ResultadoVD InserirTitulo(TituloVD contaPagar)
+        public ResultadoVD InserirContaPagar(ContaPagarVD contaPagar)
         {
             ResultadoVD resultado = new ResultadoVD();
 

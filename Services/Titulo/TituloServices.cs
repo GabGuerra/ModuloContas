@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace ModuloContas.Services.Titulo
 {
-    public abstract class TituloServices
+    public class TituloServices<T> where T : TituloVD
     {
-        public abstract ResultadoVD InserirTitulo(TituloVD titulo);
+        public ResultadoVD InserirTitulo(T titulo) 
+        {
+
+            return new ResultadoVD();
+        }
     }
 }

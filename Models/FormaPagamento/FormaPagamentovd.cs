@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ModuloContas.Models.TipoPagamento
+namespace ModuloContas.Models.FormaPagamento
 {
-    public class TipoPagamentoVD
+    public class FormaPagamentoVD
     {
-        public TipoPagamentoVD()
+
+        public FormaPagamentoVD()
         {
 
         }

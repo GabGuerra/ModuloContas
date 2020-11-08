@@ -1,9 +1,7 @@
-﻿using ModuloContas.Models.Pagamento;
-using ModuloContas.Models.TipoPagamento;
+﻿using ModuloContas.Models.MovimentacaoTitulo;
+using ModuloContas.Models.Pagamento;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ModuloContas.Models.Titulo
 {
@@ -16,6 +14,7 @@ namespace ModuloContas.Models.Titulo
         public DateTime DatVencimento { get; set; }
         public TituloVD TituloPai { get; set; }        
         public PagamentoVD InfoPagamento { get; set; }
+        public List<MovimentacaoTituloVD> ListaMovimentacoes { get; set; }
         public TituloVD()
         {
 

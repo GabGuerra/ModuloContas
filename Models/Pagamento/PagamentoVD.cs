@@ -1,18 +1,13 @@
-﻿using ModuloContas.Models.TipoPagamento;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using ModuloContas.Models.FormaPagamento;
 
 namespace ModuloContas.Models.Pagamento
 {
     public class PagamentoVD
     {
         public int NumParcelas { get; set; }
-        public TipoPagamentoVD TipoPagamento { get; set; }
+        public FormaPagamentoVD FormaPagamento { get; set; }
         public PagamentoVD()
-        {
-
+        {            
         }
     }
 }

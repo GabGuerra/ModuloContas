@@ -9,6 +9,6 @@ namespace ModuloContas.Services.ContaPagar
 {
     public interface IContaPagarService
     {
-        public ResultadoVD InserirTitulo(TituloVD contaPagar);
+        public ResultadoVD InserirContaPagar(ContaPagarVD contaPagar);
     }
 }

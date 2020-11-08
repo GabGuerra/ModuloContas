@@ -21,7 +21,7 @@ namespace ModuloContas.Controllers.ContaPagar
         [HttpPost]
         public JsonResult InserirContaPagar([FromBody]ContaPagarVD conta)         
         {
-            return Json(_contaPagarServices.InserirTitulo(conta));
+            return Json(_contaPagarServices.InserirContaPagar(conta));
         }
     }
 }
