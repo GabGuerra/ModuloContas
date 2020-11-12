@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using ModuloContas.Enums;
+using ModuloContas.Models.MovimentacaoTitulo;
 using ModuloContas.Models.Titulo;
 using ModuloContas.Repository.Shared;
 using MySql.Data.MySqlClient;
@@ -13,7 +14,7 @@ namespace ModuloContas.Repository.ContaPagar
     public class ContaPagarRepository :  MySqlRepository<ContaPagarVD>, IContaPagarRepository
     {
         public ContaPagarRepository(IConfiguration config) : base(config) { }
-        public void InserirContaPagar(ContaPagarVD conta)
+        public int InserirContaPagar(ContaPagarVD conta)
         {
             var sql = @"CALL PROC_INSERE_TITULO
                             (
@@ -30,7 +31,7 @@ namespace ModuloContas.Repository.ContaPagar
                                 @_COD_TIPO_MOVI_TITULO
                             )";
 
-            var movimentacao = conta.ListaMovimentacoes.Where(x => x.TipoMovimentacao.CodTipoMovimentacao == TipoMovimentacao.Abertura.GetHashCode()).FirstOrDefault();
+            var movimentacao = conta.ListaMovimentacoes.Where(x => x.TipoMovimentacao == TipoMovimentacao.Abertura).FirstOrDefault();
             using (var cmd = new MySqlCommand(sql))
             {
 
@@ -44,9 +45,25 @@ namespace ModuloContas.Repository.ContaPagar
                 cmd.Parameters.AddWithValue("@_VLR_JUROS", movimentacao.VlrJuros);
                 cmd.Parameters.AddWithValue("@_VLR_MULTA", movimentacao.VlrMulta);
                 cmd.Parameters.AddWithValue("@_COD_TIPO_MOVI_TITULO", TipoMovimentacao.Abertura);
+                cmd.Parameters.Add("PCOD_TITULO", MySqlDbType.Int32).Direction = System.Data.ParameterDirection.Output;
+                return ExecutarComando(cmd);
+            }
+        }
 
+        public void InserirMovimentacaoSubstituicao(long codTitulo)
+        {
+            var sql = @"INSERT INTO MOVIMENTACAO_TITULO 
+                            (DAT_MOVIMENTACAO, COD_TITULO, COD_TIPO_MOVI_TITULO)
+                        VALUES                 
+                            (CURDATE(), COD_TITULO, COD_TIPO_MOVI_TITULO)";
+
+            using (var cmd = new MySqlCommand(sql))
+            {                
+                cmd.Parameters.AddWithValue("@COD_TITULO", codTitulo);
+                cmd.Parameters.AddWithValue("@COD_TIPO_MOVI_TITULO", TipoMovimentacao.Substituicao); 
                 ExecutarComando(cmd);
             }
+
         }
     }
 }

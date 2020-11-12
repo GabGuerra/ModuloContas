@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModuloContas.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +14,18 @@ namespace ModuloContas.Models.MovimentacaoTitulo
         public decimal VlrDesconto { get; set; }
         public decimal VlrJuros { get; set; }
         public decimal VlrMulta { get; set; }
-        public TipoMovimentacaoVD TipoMovimentacao { get; set; }
+        public TipoMovimentacao TipoMovimentacao { get; set; }
 
         public MovimentacaoTituloVD()
         {
 
+        }
+        public MovimentacaoTituloVD(double vlrMovimentacao, decimal vlrDesconto, decimal vlrJuros, decimal vlrMulta)
+        {
+            this.VlrMovimentacao = vlrMovimentacao;
+            this.VlrDesconto = vlrDesconto;
+            this.VlrJuros = vlrJuros;
+            this.VlrMulta = vlrMulta;
         }
     }
 }

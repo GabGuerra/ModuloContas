@@ -9,19 +9,19 @@ using ModuloContas.Services.ContaPagar;
 namespace ModuloContas.Controllers.ContaPagar
 {
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class ContaPagarController : Controller
     {
-        private readonly IContaPagarService _contaPagarServices;
+        private readonly IContaPagarService _contaPagarServices;        
         public ContaPagarController(IContaPagarService contaPagarService)
         {
             _contaPagarServices = contaPagarService;
         }
-
-        [Route("api/[controller]/[action]")]
+        
         [HttpPost]
-        public JsonResult InserirContaPagar([FromBody]ContaPagarVD conta)         
+        public JsonResult ProcessarContaPagar(ContaPagarVD conta)         
         {
-            return Json(_contaPagarServices.InserirContaPagar(conta));
+            return Json(_contaPagarServices.ProcessarContaPagar(conta));
         }
     }
 }

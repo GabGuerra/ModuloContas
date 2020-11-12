@@ -7,7 +7,6 @@ namespace ModuloContas.Models.FormaPagamento
 {
     public class FormaPagamentoVD
     {
-
         public FormaPagamentoVD()
         {
 

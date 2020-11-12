@@ -1,4 +1,5 @@
-﻿using ModuloContas.Models.Titulo;
+﻿using ModuloContas.Models.MovimentacaoTitulo;
+using ModuloContas.Models.Titulo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace ModuloContas.Repository.ContaPagar
 {
     public interface IContaPagarRepository
     {
-        public void InserirContaPagar(ContaPagarVD contaPagar);
+        public int InserirContaPagar(ContaPagarVD contaPagar);
+        public void InserirMovimentacaoSubstituicao(long movimentacao);
     }
 }

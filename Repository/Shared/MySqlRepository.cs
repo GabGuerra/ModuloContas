@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using ModuloContas.Utils;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -79,7 +80,7 @@ namespace ModuloContas.Repository.Shared
             _conn.Open();
             try
             {
-                return cmd.ExecuteNonQuery();
+                return cmd.ExecuteScalar().ToInt();
             }
             finally
             {

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ModuloContas.Repository.ContaPagar;
 using ModuloContas.Services.ContaPagar;
 
 namespace ModuloContas
@@ -29,6 +30,7 @@ namespace ModuloContas
             services.AddControllers();
 
             services.AddTransient<IContaPagarService, ContaPagarService>();
+            services.AddTransient<IContaPagarRepository, ContaPagarRepository>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,23 +1,33 @@
-﻿using ModuloContas.Models.Resultado;
+﻿using ModuloContas.Models.MovimentacaoTitulo;
+using ModuloContas.Models.Resultado;
 using ModuloContas.Models.Titulo;
 using ModuloContas.Repository.ContaPagar;
-using ModuloContas.Services.Titulo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 namespace ModuloContas.Services.ContaPagar
 {
-    public class ContaPagarService : IContaPagarService
+    public class ContaPagarService : IContaPagarService, ITituloServices<ContaPagarVD>
     {
         private readonly IContaPagarRepository _contaPagarRepository;
-        public ResultadoVD InserirContaPagar(ContaPagarVD contaPagar)
+
+        public ContaPagarService(IContaPagarRepository contaPagarRepository)
         {
-            ResultadoVD resultado = new ResultadoVD();
+            _contaPagarRepository = contaPagarRepository;
+        }
+        public ResultadoVD ProcessarContaPagar(ContaPagarVD contaPagar) 
+        {
+            ResultadoVD resultado = new ResultadoVD(true);
+            InserirTitulo(contaPagar);            
 
             try
             {
-                _contaPagarRepository.InserirContaPagar(contaPagar);
+                if (contaPagar.isParcelado) 
+                {
+                    ProcessarPagamentoParcelado(contaPagar);                    
+                    _contaPagarRepository.InserirMovimentacaoSubstituicao(contaPagar.CodTitulo.Value);
+                }                      
             }
             catch (Exception ex)
             {
@@ -27,7 +37,38 @@ namespace ModuloContas.Services.ContaPagar
 
             return resultado;
         }
+        public void InserirTitulo(ContaPagarVD contaPagar)
+        {            
+            try
+            {
+                contaPagar.CodTitulo = _contaPagarRepository.InserirContaPagar(contaPagar);                             
+            }
+            catch
+            {
+                throw;
+            }            
+        }
 
-     
+        public void ProcessarPagamentoParcelado(ContaPagarVD contaPai)
+        {
+            for (int i = 1; i <= contaPai.InfoPagamento.NumParcelas; i++)
+            {
+                var vlrParcela = contaPai.VlrOriginal / contaPai.InfoPagamento.NumParcelas;
+                var contaPagar = new ContaPagarVD
+                    (
+                        null,
+                        vlrParcela,
+                        vlrParcela,
+                        contaPai.DatVencimento.AddMonths(i),
+                        contaPai,
+                        contaPai.InfoPagamento,
+                        new List<MovimentacaoTituloVD>(),
+                        contaPai.Beneficiario
+                    ) ;
+
+                _contaPagarRepository.InserirContaPagar(contaPagar);
+            }    
+        }
+
     }
 }
