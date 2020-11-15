@@ -19,8 +19,9 @@ namespace ModuloContas.Controllers.ContaPagar
         }
         
         [HttpPost]
-        public JsonResult ProcessarContaPagar(ContaPagarVD conta)         
+        public JsonResult ProcessarContaPagar(object contaAux)         
         {
+            ContaPagarVD conta = contaAux as ContaPagarVD;
             return Json(_contaPagarServices.ProcessarContaPagar(conta));
         }
     }

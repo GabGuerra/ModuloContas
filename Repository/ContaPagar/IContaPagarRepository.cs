@@ -11,5 +11,6 @@ namespace ModuloContas.Repository.ContaPagar
     {
         public int InserirContaPagar(ContaPagarVD contaPagar);
         public void InserirMovimentacaoSubstituicao(long movimentacao);
+        public void InserirMovimentacao(long codTitulo, MovimentacaoTituloVD movimentacao);
     }
 }

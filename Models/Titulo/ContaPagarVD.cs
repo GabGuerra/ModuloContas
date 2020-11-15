@@ -10,10 +10,13 @@ namespace ModuloContas.Models.Titulo
 {
     public class ContaPagarVD : TituloVD
     {
-        public bool isParcelado => this.InfoPagamento.NumParcelas > 1;
+        public bool isParcelado { get { return InfoPagamento.NumParcelas > 1; } }
         public ContaPagarVD()
         {
-
+            TituloPai = new TituloVD();
+            InfoPagamento = new PagamentoVD();
+            Beneficiario = new BeneficiarioVD();
+            ListaMovimentacoes = new List<MovimentacaoTituloVD>();
         }
         public ContaPagarVD
         (

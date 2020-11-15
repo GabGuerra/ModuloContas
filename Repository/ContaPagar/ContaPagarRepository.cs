@@ -50,12 +50,13 @@ namespace ModuloContas.Repository.ContaPagar
             }
         }
 
+        //TODO: Passar movimentação de substituição para método genérico 
         public void InserirMovimentacaoSubstituicao(long codTitulo)
         {
             var sql = @"INSERT INTO MOVIMENTACAO_TITULO 
                             (DAT_MOVIMENTACAO, COD_TITULO, COD_TIPO_MOVI_TITULO)
                         VALUES                 
-                            (CURDATE(), COD_TITULO, COD_TIPO_MOVI_TITULO)";
+                            (CURDATE(), @COD_TITULO, @COD_TIPO_MOVI_TITULO)";
 
             using (var cmd = new MySqlCommand(sql))
             {                
@@ -64,6 +65,26 @@ namespace ModuloContas.Repository.ContaPagar
                 ExecutarComando(cmd);
             }
 
+        }
+
+        public void InserirMovimentacao(long codTitulo, MovimentacaoTituloVD movimentacao) 
+        {
+            var sql = @"INSERT INTO MOVIMENTACAO_TITULO 
+                            (DAT_MOVIMENTACAO, COD_TITULO, COD_TIPO_MOVI_TITULO, VLR_MOVIMENTACAO, VLR_DESCONTO, VLR_JUROS, VLR_MULTA)
+                        VALUES                 
+                            (CURDATE(), @COD_TITULO, @COD_TIPO_MOVI_TITULO, @VLR_MOVIMENTACAO, @VLR_DESCONTO, @VLR_JUROS, @VLR_MULTA)";
+
+            using (var cmd = new MySqlCommand(sql))
+            {
+                cmd.Parameters.AddWithValue("@COD_TITULO", codTitulo);
+                cmd.Parameters.AddWithValue("@COD_TIPO_MOVI_TITULO", movimentacao.TipoMovimentacao.GetHashCode());
+                cmd.Parameters.AddWithValue("@VLR_MOVIMENTACAO", movimentacao.VlrMovimentacao);
+                cmd.Parameters.AddWithValue("@VLR_DESCONTO", movimentacao.VlrDesconto);
+                cmd.Parameters.AddWithValue("@VLR_JUROS", movimentacao.VlrJuros);
+                cmd.Parameters.AddWithValue("@VLR_MULTA", movimentacao.VlrMovimentacao);
+
+                ExecutarComando(cmd);
+            }
         }
     }
 }

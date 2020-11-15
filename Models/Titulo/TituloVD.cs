@@ -24,5 +24,26 @@ namespace ModuloContas.Models.Titulo
             Beneficiario = new BeneficiarioVD();
             ListaMovimentacoes = new List<MovimentacaoTituloVD>();
         }
+        public TituloVD
+        (
+               long? codTitulo,
+               double vlrAberto,
+               double vlrOriginal,
+               DateTime datVencimento,
+               TituloVD tituloPai,
+               PagamentoVD infoPagamento,
+               List<MovimentacaoTituloVD> listaMovimentacoes,
+               BeneficiarioVD beneficiario
+        )
+        {
+            CodTitulo = codTitulo;
+            VlrAberto = vlrAberto;
+            VlrOriginal = vlrOriginal;
+            DatVencimento = datVencimento;
+            TituloPai = tituloPai;
+            InfoPagamento = infoPagamento;
+            ListaMovimentacoes = listaMovimentacoes;
+            Beneficiario = beneficiario;
+        }
     }
 }

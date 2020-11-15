@@ -16,18 +16,18 @@ namespace ModuloContas.Services.ContaPagar
         {
             _contaPagarRepository = contaPagarRepository;
         }
-        public ResultadoVD ProcessarContaPagar(ContaPagarVD contaPagar) 
+        public ResultadoVD ProcessarContaPagar(ContaPagarVD contaPagar)
         {
             ResultadoVD resultado = new ResultadoVD(true);
-            InserirTitulo(contaPagar);            
+            InserirTitulo(contaPagar);
 
             try
             {
-                if (contaPagar.isParcelado) 
+                if (contaPagar.isParcelado)
                 {
-                    ProcessarPagamentoParcelado(contaPagar);                    
+                    ProcessarPagamentoParcelado(contaPagar);
                     _contaPagarRepository.InserirMovimentacaoSubstituicao(contaPagar.CodTitulo.Value);
-                }                      
+                }
             }
             catch (Exception ex)
             {
@@ -38,15 +38,15 @@ namespace ModuloContas.Services.ContaPagar
             return resultado;
         }
         public void InserirTitulo(ContaPagarVD contaPagar)
-        {            
+        {
             try
             {
-                contaPagar.CodTitulo = _contaPagarRepository.InserirContaPagar(contaPagar);                             
+                contaPagar.CodTitulo = _contaPagarRepository.InserirContaPagar(contaPagar);
             }
             catch
             {
                 throw;
-            }            
+            }
         }
 
         public void ProcessarPagamentoParcelado(ContaPagarVD contaPai)
@@ -64,11 +64,26 @@ namespace ModuloContas.Services.ContaPagar
                         contaPai.InfoPagamento,
                         new List<MovimentacaoTituloVD>(),
                         contaPai.Beneficiario
-                    ) ;
+                    );
 
                 _contaPagarRepository.InserirContaPagar(contaPagar);
-            }    
+            }
         }
 
+        public ResultadoVD InserirMovimentacao(long codTitulo, MovimentacaoTituloVD movimentacao)
+        {
+            ResultadoVD resultado = new ResultadoVD(true);
+            try
+            {
+                _contaPagarRepository.InserirMovimentacao(codTitulo, movimentacao);
+            }
+            catch (Exception ex)
+            {
+                resultado.Sucesso = false;
+                resultado.Mensagem = $"Não foi possível inserir a conta. {Environment.NewLine} {ex.Message}";
+            }
+
+            return resultado;
+        }
     }
 }
