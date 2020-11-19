@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using ModuloContas.Enums;
 using ModuloContas.Models.MovimentacaoTitulo;
 using ModuloContas.Models.Titulo;
 using ModuloContas.Repository.Shared;
 using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ModuloContas.Repository.ContaPagar
+namespace ModuloContas.Repository.ContaReceber
 {
-    public class ContaPagarRepository :  MySqlRepository<ContaPagarVD>, IContaPagarRepository
+    public class ContaReceberRepository : MySqlRepository<ContaReceberVD>, IContaReceberRepository
     {
-        public ContaPagarRepository(IConfiguration config) : base(config) { }
-        public int InserirContaPagar(ContaPagarVD conta)
+        public ContaReceberRepository(IConfiguration config) : base(config) { }
+        public int InserirContaReceber(ContaReceberVD conta)
         {
             var sql = @"CALL PROC_INSERE_TITULO
                             (
@@ -38,10 +38,10 @@ namespace ModuloContas.Repository.ContaPagar
 
                 cmd.Parameters.AddWithValue("@_VLR_ABERTO", conta.VlrAberto);
                 cmd.Parameters.AddWithValue("@_VLR_ORIGINAL", conta.VlrOriginal);
-                cmd.Parameters.AddWithValue("@_DAT_VENCIMENTO", conta.DatVencimento);                
+                cmd.Parameters.AddWithValue("@_DAT_VENCIMENTO", conta.DatVencimento);
                 cmd.Parameters.AddWithValue("@_COD_BENEFICIARIO", null);
-                cmd.Parameters.AddWithValue("@_COD_SACADO", null);
-                cmd.Parameters.AddWithValue("@_COD_TIPO_TITULO", TipoTitulo.Pagar);
+                cmd.Parameters.AddWithValue("@_COD_SACADO", conta.Sacado.CodSacado);
+                cmd.Parameters.AddWithValue("@_COD_TIPO_TITULO", TipoTitulo.Receber);
                 cmd.Parameters.AddWithValue("@_COD_TITULO_PAI", conta.TituloPai.CodTitulo);
                 cmd.Parameters.AddWithValue("@_VLR_DESCONTO", movimentacao.VlrDesconto);
                 cmd.Parameters.AddWithValue("@_VLR_JUROS", movimentacao.VlrJuros);
@@ -61,15 +61,15 @@ namespace ModuloContas.Repository.ContaPagar
                             (CURDATE(), @COD_TITULO, @COD_TIPO_MOVI_TITULO)";
 
             using (var cmd = new MySqlCommand(sql))
-            {                
+            {
                 cmd.Parameters.AddWithValue("@COD_TITULO", codTitulo);
-                cmd.Parameters.AddWithValue("@COD_TIPO_MOVI_TITULO", TipoMovimentacao.Substituicao); 
+                cmd.Parameters.AddWithValue("@COD_TIPO_MOVI_TITULO", TipoMovimentacao.Substituicao);
                 ExecutarComando(cmd);
             }
 
         }
 
-        public void InserirMovimentacao(long codTitulo, MovimentacaoTituloVD movimentacao) 
+        public void InserirMovimentacao(long codTitulo, MovimentacaoTituloVD movimentacao)
         {
             var sql = @"INSERT INTO MOVIMENTACAO_TITULO 
                             (DAT_MOVIMENTACAO, COD_TITULO, COD_TIPO_MOVI_TITULO, VLR_MOVIMENTACAO, VLR_DESCONTO, VLR_JUROS, VLR_MULTA)

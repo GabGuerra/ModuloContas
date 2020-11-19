@@ -1,6 +1,7 @@
 ﻿using ModuloContas.Models.Beneficiario;
 using ModuloContas.Models.MovimentacaoTitulo;
 using ModuloContas.Models.Pagamento;
+using ModuloContas.Models.Sacado;
 using System;
 using System.Collections.Generic;
 
@@ -16,14 +17,16 @@ namespace ModuloContas.Models.Titulo
         public PagamentoVD InfoPagamento { get; set; }
         public List<MovimentacaoTituloVD> ListaMovimentacoes { get; set; }
         public BeneficiarioVD Beneficiario { get; set; }
-      
+        public SacadoVD Sacado { get; set; }
+
         public TituloVD()
         {
             TituloPai = new TituloVD();
             InfoPagamento = new PagamentoVD();
-            Beneficiario = new BeneficiarioVD();
+            Beneficiario = new BeneficiarioVD();     
             ListaMovimentacoes = new List<MovimentacaoTituloVD>();
-        }
+            Sacado = new SacadoVD();
+        }       
         public TituloVD
         (
                long? codTitulo,
